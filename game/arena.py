@@ -36,7 +36,7 @@ class Game():
     def _end_game(self, result: str):
         self.game_processing = False
         self.game_results = result
-        return results
+        return result
 
     def next_move(self) -> str:
         if results := self._check_hp():

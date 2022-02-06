@@ -65,7 +65,7 @@ class Hero(ABC):
     def use_skill(self) -> Optional[float]:
         if not self.skill_used and self.stamina - self.unit_class.skill.stamina:
             self.skill_used = True
-            return round(self.unit_class.damage, 1)
+            return round(self.unit_class.skill.damage, 1)
         return None
 
     @abstractmethod
