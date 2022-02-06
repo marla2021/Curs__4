@@ -1,6 +1,5 @@
 from abc import ABC
 from skills import kick, thrust, Skill
-from typing import Dict, Type, Union
 
 
 class UnitClass(ABC):
@@ -32,9 +31,8 @@ class Thief(UnitClass):
     armor = 1,
     skill = thrust
 
+
 pers_classes = {
     Thief.name: Thief,
     Warrior.name: Warrior,
 }
-
-

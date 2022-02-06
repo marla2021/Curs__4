@@ -12,7 +12,7 @@ from typing import Optional
 #         return cls._instances[cls]
 
 
-class Game():
+class Game:
     def __init__(self):
         self.player = None
         self.enemy = None
