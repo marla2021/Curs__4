@@ -31,7 +31,7 @@ def choose_hero():
     if request.method == "GET":
         return render_template("hero-choosing.html",
                                header ="Выберите героя",
-                               classes=pers_classes.values(),
+                               classes=pers_classes,
                                equipment=EQUIPMENT,
                                next_button="Начать сражение")
     heroes["player"] = Player(unit_class= pers_classes[request.form["unit_class"]],
