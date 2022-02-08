@@ -2,16 +2,6 @@ from unit import Hero
 from typing import Optional
 
 
-# class SingletonMeta(type):
-#     _instances = {}
-#
-#     def __call__(self, *args, **kwargs):
-#         if cls not in cls._instances:
-#             instance = super().__call__(*args, **kwargs)
-#             cls._instances[cls] = instance
-#         return cls._instances[cls]
-
-
 class Game:
     def __init__(self):
         self.player = None
@@ -24,6 +14,9 @@ class Game:
         self.enemy = enemy
         self.game_processing = True
 
+    # Метод «Проверка здоровья игроков» —
+    # если здоровье одного из игроков закончилось,
+    # выполняем метод «Конец игры».
     def _check_hp(self) -> Optional[str]:
         if self.player.hp <= 0 and self.enemy.hp <= 0:
             return self._end_game(result="В этой игре никто не победил")
@@ -33,13 +26,20 @@ class Game:
             return self._end_game(result="Игрок победил")
         return None
 
+    # возвращает строку с результатом боя.
     def _end_game(self, result: str):
         self.game_processing = False
         self.game_results = result
         return result
 
+    # проходит проверка, осталось ли еще здоровье у игроков.
+    # Если да, тогда происходит восстановление выносливости игроков,
+    # противник наносит удар, и снова наступает ход игрока.
+    # Если нет, тогда метод «Проверка здоровья игроков»
+    # возвращает строку с результатом боя.
     def next_move(self) -> str:
-        if results := self._check_hp():
+        results = self._check_hp()
+        if results:
             return results
         if not self.game_processing:
             return self.game_results
@@ -47,14 +47,16 @@ class Game:
         self._stamina_regenerate()
         return results
 
+    # регенерируем выносливость
     def _stamina_regenerate(self):
         self.player.regenerate_stamina()
         self.enemy.regenerate_stamina()
 
+    # враг наносит удар игроку, если есть урон, игрок принимает удар
     def enemy_hit(self) -> str:
         delta_damage: Optional[float] = self.enemy.hit(self.player)
         if delta_damage is not None:
-            self.enemy.take_hit(delta_damage)
+            self.player.take_hit(delta_damage)
             results = f"Враг наносит вам урон {delta_damage}"
         else:
             results = f"Врагу не хватает выносливости, чтобы нанести удар"

@@ -12,27 +12,27 @@ class Hero(ABC):
     def __init__(self, name: str, unit_class: Type[UnitClass], weapon: Weapon, armor: Armor):
         self.name = name
         self.unit_class = unit_class
-        self.hp = self.unit_class.max_health
-        self.stamina = self.unit_class.max_stamina
+        self._hp = self.unit_class.max_health
+        self._stamina = self.unit_class.max_stamina
         self.weapon = weapon
         self.armor = armor
         self.skill_used: bool = False
 
     @property
     def hp(self):
-        return round(self.hp, 1)
+        return round(self._hp, 1)
 
     @hp.setter
     def hp(self, value):
-        self.hp = value
+        self._hp = value
 
     @property
     def stamina(self):
-        return round(self.stamina, 1)
+        return round(self._stamina, 1)
 
     @stamina.setter
     def stamina(self, value):
-        self.stamina = value
+        self._stamina = value
 
     @property
     def total_armor(self):
@@ -40,6 +40,11 @@ class Hero(ABC):
             return self.armor.defence * self.unit_class.armor
         return 0
 
+    # если защита-защита от удара меньше 0, ничего не возвращаем,
+    # иначе, оружие героя умножаем на коэффиц. атаки
+    # итоговый урон будет равен защита героя минус броня
+    # если итоговый урон меньше 0 - ничего не возвращаем
+    # иначе от выносливости отнимаем выносливость от удара оружием
     def _hit(self, target: Hero) -> Optional[float]:
         if self.stamina - self.weapon.stamina_per_hit < 0:
             return None

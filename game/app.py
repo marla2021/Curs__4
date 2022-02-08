@@ -31,14 +31,14 @@ def choose_hero():
     if request.method == "GET":
         return render_template("hero-choosing.html",
                                header ="Выберите героя",
-                               classes=pers_classes,
+                               classes=pers_classes.keys(),
                                equipment=EQUIPMENT,
                                next_button="Начать сражение")
     heroes["player"] = Player(unit_class= pers_classes[request.form["unit_class"]],
                               weapon = EQUIPMENT.get_weapon(request.form["weapon"]),
                               armor = EQUIPMENT.get_armor(request.form["armor"]),
                               name = request.form["name"])
-    return redirect(url_for("choose-enemy"))
+    return redirect(url_for("choose_enemy"))
 
 
 @app.route("/choose-enemy/", methods=["GET", "POST"])
@@ -46,7 +46,7 @@ def choose_enemy():
     if request.method == "GET":
         return render_template("hero-choosing.html",
                                header ="Выберите врага",
-                               classes=pers_classes.values(),
+                               classes=pers_classes.keys(),
                                equipment=EQUIPMENT,
                                next_button="Начать сражение")
     heroes["enemy"] = Enemy(unit_class= pers_classes[request.form["unit_class"]],
@@ -54,7 +54,7 @@ def choose_enemy():
                               armor = EQUIPMENT.get_armor(request.form["armor"]),
                               name = request.form["name"])
 
-    return redirect(url_for("fight"))
+    return redirect(url_for("start_fight"))
 
 
 @app.route("/fight")
